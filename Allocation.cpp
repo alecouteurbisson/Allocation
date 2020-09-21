@@ -31,8 +31,10 @@ void showThing(std::shared_ptr<Thing> t)
 
 int main()
 {
-     auto thing = std::make_shared<Thing>("fred", 5);
+    {
+        auto thing = std::make_shared<Thing>("fred", 5);
 
-     showThing(thing);
-
+        showThing(thing);
+        std::cout << "End of scope" << std::endl;
+    }
 }
