@@ -29,12 +29,21 @@ void showThing(std::shared_ptr<Thing> t)
     std::cout << "showThing " << t->name << " " << t->size << std::endl;
 }
 
+std::shared_ptr<Thing> savedThing;
+
 int main()
 {
     {
         auto thing = std::make_shared<Thing>("fred", 5);
 
         showThing(thing);
+
+        savedThing = thing;
         std::cout << "End of scope" << std::endl;
     }
+
+    showThing(savedThing);
+    savedThing.reset();
+
+    std::cout << "Leaving main";
 }
