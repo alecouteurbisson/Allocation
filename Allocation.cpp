@@ -29,27 +29,39 @@ void showThing(std::shared_ptr<Thing> t)
     std::cout << "showThing " << t->name << " " << t->size << std::endl;
 }
 
-void showThingUnsafe(Thing* t)
+void showThingWeak(std::weak_ptr<Thing> t)
 {
-    std::cout << "showThingUnsafe " << t->name << " " << t->size << std::endl;
+    if (auto tt = t.lock())
+    {
+        std::cout << "showThingWeak " << tt->name << " " << tt->size << std::endl;
+    }
+    else
+    {
+        std::cout << "no Thing " << std::endl;
+    }
 }
 
 std::shared_ptr<Thing> savedThing;
 
 int main()
 {
+    std::weak_ptr<Thing> weakThing;
     {
         auto thing = std::make_shared<Thing>("fred", 5);
 
         showThing(thing);
 
         savedThing = thing;
+        weakThing = thing;
         std::cout << "End of scope" << std::endl;
     }
-    showThingUnsafe(savedThing.get());
 
     showThing(savedThing);
+    showThingWeak(weakThing);
+
     savedThing.reset();
+
+    showThingWeak(weakThing);
 
     std::cout << "Leaving main";
 }
