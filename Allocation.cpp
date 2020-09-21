@@ -41,6 +41,12 @@ void showThingWeak(std::weak_ptr<Thing> t)
     }
 }
 
+void changeThing(std::shared_ptr<Thing> t)
+{
+    t->name = "cedric";
+    t->size = 10;
+}
+
 std::shared_ptr<Thing> savedThing;
 
 int main()
@@ -53,6 +59,9 @@ int main()
 
         savedThing = thing;
         weakThing = thing;
+
+        changeThing(thing);
+
         std::cout << "End of scope" << std::endl;
     }
 
