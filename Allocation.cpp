@@ -29,6 +29,11 @@ void showThing(std::shared_ptr<Thing> t)
     std::cout << "showThing " << t->name << " " << t->size << std::endl;
 }
 
+void showThingUnsafe(Thing* t)
+{
+    std::cout << "showThingUnsafe " << t->name << " " << t->size << std::endl;
+}
+
 std::shared_ptr<Thing> savedThing;
 
 int main()
@@ -41,6 +46,7 @@ int main()
         savedThing = thing;
         std::cout << "End of scope" << std::endl;
     }
+    showThingUnsafe(savedThing.get());
 
     showThing(savedThing);
     savedThing.reset();
