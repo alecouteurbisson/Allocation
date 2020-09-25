@@ -24,53 +24,27 @@ public:
     }
 };
 
-void showThing(std::shared_ptr<Thing> t)
+void showThing(Thing t)
 {
-    std::cout << "showThing " << t->name << " " << t->size << std::endl;
+    std::cout << "showThing " << t.name << " " << t.size << std::endl;
+   
 }
 
-void showThingWeak(std::weak_ptr<Thing> t)
+void showRefThing(Thing &t)
 {
-    if (auto tt = t.lock())
-    {
-        std::cout << "showThingWeak " << tt->name << " " << tt->size << std::endl;
-    }
-    else
-    {
-        std::cout << "no Thing " << std::endl;
-    }
-}
-
-void changeThing(std::shared_ptr<Thing> t)
-{
-    t->name = "cedric";
-    t->size = 10;
+    std::cout << "showRefThing " << t.name << " " << t.size << std::endl;
+    t.size += 10;
+    std::cout << "showThing " << t.name << " " << t.size << std::endl;
 }
 
 std::shared_ptr<Thing> savedThing;
 
 int main()
 {
-    std::weak_ptr<Thing> weakThing;
-    {
-        auto thing = std::make_shared<Thing>("fred", 5);
-
-        showThing(thing);
-
-        savedThing = thing;
-        weakThing = thing;
-
-        changeThing(thing);
-
-        std::cout << "End of scope" << std::endl;
-    }
-
-    showThing(savedThing);
-    showThingWeak(weakThing);
-
-    savedThing.reset();
-
-    showThingWeak(weakThing);
-
-    std::cout << "Leaving main";
+    Thing t("fred", 5);
+    showThing(t);
+    showRefThing(t);
+    showThing(t);
+    showRefThing(t);
+    std::cout << "ending";
 }
